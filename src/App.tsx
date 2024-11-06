@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { IconPlus } from '@tabler/icons-react';
 import './App.css'
 import Task from './components/Task';
 // import Task2 from './components/Task2';
 import { motion, AnimatePresence } from 'framer-motion';
 import ContentLayout from './components/ContentLayout';
-import { useSelector } from 'react-redux';
-import { RootState } from './store/store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from './store/store';
 import Switcher from './components/Switcher';
 
 const ENTER_KEYNAME = 'Enter'
 
 function App() {
 
-	const sharedTeme = useSelector((state: RootState) => state.shared.theme )
+	// const sharedTeme = useSelector((state: RootState) => state.shared.theme )
 
 	const [value, setValue] = useState<string>('')
 	const [listValue, setList] = useState<any[]>([

@@ -31,16 +31,18 @@ function Switcher() {
 		
 		// prefersDarkScheme.addEventListener('change', listener);
 		// return () => prefersDarkScheme.removeEventListener('change', listener);
-	}, []);
+	})	;
 
 	useEffect(() => {
 		const isDark = sharedTheme == ThemeEnum.DARK
-		isDark ? document.body.classList.add('dark') : document.body.classList.remove('dark')
+		if (isDark) document.body.classList.add('dark') 
+		else document.body.classList.remove('dark')
 	}, [sharedTheme]);
 
 	function handleClick() {
 		const isDark = sharedTheme == ThemeEnum.DARK
-		isDark ? dispatch(changeThemeToLight()) : dispatch(changeThemeToDark())
+		if (isDark) dispatch(changeThemeToLight()) 
+		else dispatch(changeThemeToDark())
 	}
 
 	return (
