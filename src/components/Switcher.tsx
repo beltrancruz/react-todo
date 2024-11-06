@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
-import { changeTheme, changeThemeToDark, changeThemeToLight } from "../store/slices/sharedSlice"
+import { changeThemeToDark, changeThemeToLight } from "../store/slices/sharedSlice"
 import { ThemeEnum } from "../enums/shared.enum"
 import { useEffect } from "react"
 
@@ -14,11 +14,11 @@ function Switcher() {
 
 
 	
-	useEffect(() => {
-		const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+	// useEffect(() => {
+	// 	const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
-		const contains = document.body.classList.contains('dark')
-		if (prefersDarkScheme.matches && contains && sharedTheme != ThemeEnum.DARK) dispatch(changeTheme(ThemeEnum.DARK))
+	// 	const contains = document.body.classList.contains('dark')
+	// 	if (prefersDarkScheme.matches && contains && sharedTheme != ThemeEnum.DARK) dispatch(changeTheme(ThemeEnum.DARK))
 
 
 		// if (theme === 'system') {
@@ -31,7 +31,7 @@ function Switcher() {
 		
 		// prefersDarkScheme.addEventListener('change', listener);
 		// return () => prefersDarkScheme.removeEventListener('change', listener);
-	})	;
+	// });
 
 	useEffect(() => {
 		const isDark = sharedTheme == ThemeEnum.DARK
@@ -41,7 +41,7 @@ function Switcher() {
 
 	function handleClick() {
 		const isDark = sharedTheme == ThemeEnum.DARK
-		if (isDark) dispatch(changeThemeToLight()) 
+		if (isDark) dispatch(changeThemeToLight());
 		else dispatch(changeThemeToDark())
 	}
 
