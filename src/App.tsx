@@ -65,7 +65,7 @@ function App() {
 					<Switcher />
 				</div>
 			</header>
-			<main className='bg-light-background dark:bg-dark-background-shade-950 text-light-font dark:text-dark-font select-none flex flex-col items-center justify-start py-32 gap-8 px-6'>
+			<main className='overflow-x-hidden bg-light-background dark:bg-dark-background-shade-950 text-light-font dark:text-dark-font select-none flex flex-col items-center justify-start py-32 gap-8 px-6'>
 				<ContentLayout>
 					<>
 						<p className='dark:text-dark-font-shade-950 font-bold md:text-3xl '>Type a task...</p>
@@ -83,7 +83,7 @@ function App() {
 							</button>
 						</div>
 					</>
-					<motion.ul className='flex flex-col gap-4 '>
+					<motion.ul className='flex flex-col gap-4'>
 						<AnimatePresence mode='popLayout'>
 							{
 								listValue.map((item, index) => 
