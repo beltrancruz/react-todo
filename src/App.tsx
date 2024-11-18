@@ -10,22 +10,53 @@ import ContentLayout from './components/ContentLayout';
 import Switcher from './components/Switcher';
 
 const ENTER_KEYNAME = 'Enter'
+const STORAGE_KEY = 'todoList'
 
 function App() {
 
 	// const sharedTeme = useSelector((state: RootState) => state.shared.theme )
-
+	// const [isInit, setInit] = useState(false)
 	const [value, setValue] = useState<string>('')
-	const [listValue, setList] = useState<any[]>([
-		{ id: 1, name: 'apples', }, 
-		{ id: 2, name: 'pears', }, 
-		{ id: 3, name: 'oranges', },
-	])
+	const [listValue, setList] = useState<any[]>(() => {
+		const todoList = localStorage.getItem(STORAGE_KEY)
+		return todoList != null ? JSON.parse(todoList) : []
+	})
 
-	const handleSubmit = () => { if (value.trim()) { setList([{ id: new Date().getTime(), name: value }, ...listValue]); setValue('') } }
 	const handleKeydownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key == ENTER_KEYNAME) handleSubmit() }
-	const handleDeleteItem = (i: number) => { setList(listValue.filter((_, index) => index != i)) }
+	const handleSubmit = () => {
+		const item = value.trim();
+		if (!item) return;
+		const newList = [{ id: new Date().getTime(), name: item }, ...listValue];
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(newList));
+		setList(newList);
+		setValue('');
+	}
+	const handleDeleteItem = (i: number) => {
+		const newList = listValue.filter((_, index) => index != i);
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(newList));
+		setList(newList);
+	}
+
+	const handleUpdateItem = (i: number, txt: string) => {
+		const newList = listValue.map((item, index) => {
+			if (index == i) return ({ id: item.id, name: txt })
+			return item
+		});
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(newList));
+		setList(newList);
+	}
 	
+	
+	// useEffect(() => {
+	// 	if (!isInit) {
+	// 		console.log({isInit, msg: 'initialized'});
+	// 	} else {
+	// 		setInit(true)
+	// 	}
+	// 	console.log({isInit, msg: 'triggered'});
+		
+	// }, [isInit])
+
 	return (
 		<>
 			<header className=' bg-light-background dark:bg-dark-background text-light-font dark:text-dark-font select-none md:p-4 p-2 border dark:border-dark-background font-bold'>
@@ -37,7 +68,7 @@ function App() {
 			<main className='bg-light-background dark:bg-dark-background-shade-950 text-light-font dark:text-dark-font select-none flex flex-col items-center justify-start py-32 gap-8 px-6'>
 				<ContentLayout>
 					<>
-						<p className='dark:text-dark-font-shade-950 font-bold md:text-3xl '>Type a taks...</p>
+						<p className='dark:text-dark-font-shade-950 font-bold md:text-3xl '>Type a task...</p>
 						<div className='flex items-center gap-4'>
 							<input
 								value={value}
@@ -57,7 +88,13 @@ function App() {
 							{
 								listValue.map((item, index) => 
 									// <Task2 key={item.id} id={item.id} index={index} item={item.name} onDeleteItem={ (e) => { handleDeleteItem(e) } }   />
-									<Task key={item.id}  index={index} item={item.name} onDeleteItem={ (e) => { handleDeleteItem(e) } }   />
+									<Task 
+										key={item.id} 
+										index={index} 
+										item={item.name} 
+										onDeleteItem={ (i) => { handleDeleteItem(i) } }
+										onUpdateItem={ (i, txt) => { handleUpdateItem(i, txt) } }
+									/>
 								)
 							}
 						</AnimatePresence>
@@ -100,7 +137,7 @@ function App() {
 					</ul> */}
 			</main>
 			<footer className='bg-light-background dark:bg-dark-background text-light-font dark:text-dark-font select-none p-2 border dark:border-dark-background'>
-				Developed by <span className='italic'>beltrancruz</span>
+				Developed by <a target='_blank' href='https://github.com/beltrancruz'  className='italic'>beltrancruz</a>
 			</footer>
 		</>
 	)

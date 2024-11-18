@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
-import { changeThemeToDark, changeThemeToLight } from "../store/slices/sharedSlice"
+import { changeTheme, changeThemeToDark, changeThemeToLight } from "../store/slices/sharedSlice"
 import { ThemeEnum } from "../enums/shared.enum"
 import { useEffect } from "react"
 
@@ -32,6 +32,13 @@ function Switcher() {
 		// prefersDarkScheme.addEventListener('change', listener);
 		// return () => prefersDarkScheme.removeEventListener('change', listener);
 	// });
+
+	useEffect(() => {
+		const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+		if (prefersDarkScheme.matches) {
+			dispatch(changeTheme(ThemeEnum.DARK))
+		}
+	}, [])
 
 	useEffect(() => {
 		const isDark = sharedTheme == ThemeEnum.DARK
